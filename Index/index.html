@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>超级V广告</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="__PUBLIC__/Home/style/sm.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/style/sm-extend.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/style/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/style/app.css">
+</head>
+
+<body>
+<style>
+
+    /* 精品推荐 */
+    .col-50{
+        margin-top:10px;
+    }
+    .row .col-50{width:29%;margin-left:4%;height:190px;}
+    .sp-jiping div .sp-jp-img{
+        width: 100%;
+        height: 55%;
+        text-align: center;
+    }
+
+</style>
+<div id="top" class="bar">
+    <div class="searchbar row">
+        <a class="col-20 sp-logo">
+            <img src="__PUBLIC__/Home/images/1_03.png">
+        </a>
+        <div class="search-input col-60 sp-input">
+            <label class="icon icon-search" for="search"></label>
+            <input type="search" id='searchKey' placeholder='输入关键字' readonly />
+        </div>
+        <a class="button  button-primary col-20 sp-search">搜索</a>
+    </div>
+</div>
+
+<!-- 搜索 -->
+<div class="content">
+    <!-- 幻灯片 -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <volist name="index_adv" id="vo">
+                <div class="swiper-slide">
+                    <a href="{$vo.linkurl}" title="{$vo.title}"><img src="{$vo.img}" alt="{$vo.title}"></a>
+                </div>
+            </volist>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+
+
+    <!-- 滚动栏目 -->
+    <div class="move-cat-list">
+        <div class="swiper-wrapper">
+            <volist name="category" id="vo">
+                <div class="swiper-slide">
+                    <a href="{:U('Category/index')}/id/{$vo.id}">
+                        <eq name="vo.img" value=""><img src="__PUBLIC__/Home/images/head_gold_S.png" /><else /><img  src="{$vo.img}"/></eq>
+                    </a>
+                </div>
+            </volist>
+            <!--根据栏目id 配图读取 -->
+        </div>
+    </div>
+    <notempty name="shopstore">
+        <!-- 推荐商家 -->
+        <div class="content-padded">
+            <div class="sp-title">
+                <img src="__PUBLIC__/Home/images/1_19.png">
+                <h1>商家展播</h1>
+            </div>
+            <div class="row sp-list">
+
+                <volist name="shopstore" id="vo">
+                    <div class="col-33">
+                        <a href="{:U('Company/card')}/id/{$vo.info.id}">
+                            <h3>{$vo.info.name|substr=###,0,21}</h3>
+                            <p>发布过{$vo.count}款产品</p>
+                            <div class="sp-list-img">
+                                <img src="{$vo.info.img}">
+                            </div>
+                        </a>
+                    </div>
+                </volist>
+            </div>
+        </div>
+
+        <h2><!-- 分割线 --></h2>
+    </notempty>
+
+
+
+    <!-- 新品发布 -->
+    <notempty name="get_new">
+        <div class="content-padded">
+            <div class="sp-title">
+                <img src="__PUBLIC__/Home/images/1_23.png">
+                <h1>最新发布</h1>
+                <a href="{:U('Index/lists',array('id'=>2))}">
+                    <div class="sp-jp-more" id="morenew">更多
+                        <img src="__PUBLIC__/Home/images/1_26.png" />
+                    </div>
+                </a>
+
+
+
+
+            </div>
+            <div class="row sp-jiping" >
+                <volist name="get_new" id="vo"  offset="0" length='18'>
+                    <div class="col-50">
+                        <a href="{:U('Product/info',array('id'=>$vo['big']['id']))}">
+                            <div class="sp-jp-img">
+                                <img src="__ROOT__{$vo.big.shortimg}">
+                            </div>
+                            <div class="sp-jp-title">{$vo.big.title|substr=###,0,18}</div>
+                            <div class="sp-jp-company">{$vo.big.cname|substr=###,0,18}</div>
+                            <div class="sp-jp-price">￥{$vo.big.price}元</div>
+                        </a>
+                    </div>
+                </volist>
+            </div>
+            <!--id=2,精品推荐-->
+            <a href="{:U('Index/lists',array('id'=>2))}">
+                <div style="width:100%;height:50px;line-height:50px;text-align: center;font-size: 16px;background: green;color:white;margin-top:20px;">
+                    查看更多
+                </div>
+            </a>
+
+
+        </div>
+        <h2><!-- 分割线 --></h2>
+    </notempty>
+
+
+
+
+    <!-- 精品推荐 -->
+
+    <notempty name="get_jp">
+        <div class="content-padded">
+            <div class="sp-title">
+                <img src="__PUBLIC__/Home/images/1_23.png">
+                <h1>精品推荐</h1>
+                <a href="{:U('Index/lists',array('id'=>1))}">
+                    <div class="sp-jp-more" id="morejp">更多
+                        <img src="__PUBLIC__/Home/images/1_26.png" />
+                    </div>
+                </a>
+            </div>
+
+            <div class="row sp-jiping">
+                <volist name="get_jp" id="vo"  offset="0" length='18'>
+                    <div class="col-50">
+                        <a href="{:U('Product/info',array('id'=>$vo['big']['id']))}">
+                            <div class="sp-jp-img">
+                                <img src="__ROOT__{$vo.big.shortimg}">
+                            </div>
+                            <div class="sp-jp-title">{$vo.big.title|substr=###,0,18}</div>
+                            <div class="sp-jp-company">{$vo.big.cname|substr=###,0,18}</div>
+                            <div class="sp-jp-price">￥{$vo.big.price}元</div>
+                        </a>
+                    </div>
+                </volist>
+            </div>
+            <!--id=1,精品推荐-->
+            <a href="{:U('Index/lists',array('id'=>1))}">
+                <div style="width:100%;height:50px;line-height:50px;text-align: center;font-size: 16px;background: green;color:white;margin-top:20px;">
+                    查看更多
+                </div>
+            </a>
+
+        </div>
+        <h2><!-- 分割线 --></h2>
+    </notempty>
+
+
+
+
+    <notempty name="get_hot">
+        <!-- 热门产品 -->
+        <div class="content-padded">
+            <div class="sp-title">
+                <img src="__PUBLIC__/Home/images/1_23.png">
+                <h1>热门推荐</h1>
+                <a href="{:U('Index/lists',array('id'=>3))}">
+                    <div class="sp-jp-more" id="morehot">更多
+                        <img src="__PUBLIC__/Home/images/1_26.png" />
+                    </div>
+                </a>
+
+
+            </div>
+            <div class="row sp-jiping">
+                <volist name="get_hot" id="vo"  offset="0" length='18'>
+                    <div class="col-50">
+                        <a href="{:U('Product/info',array('id'=>$vo['big']['id']))}">
+                            <div class="sp-jp-img">
+                                <img src="__ROOT__{$vo.big.shortimg}">
+                            </div>
+                            <div class="sp-jp-title">{$vo.big.title|substr=###,0,18}</div>
+                            <div class="sp-jp-company">{$vo.big.cname|substr=###,0,18}</div>
+                            <div class="sp-jp-price">￥{$vo.big.price}元</div>
+                        </a>
+                    </div>
+                </volist>
+
+
+            </div>
+            <!--id=3,热门产品-->
+            <a href="{:U('Index/lists',array('id'=>3))}">
+                <div style="width:100%;height:50px;line-height:50px;text-align: center;font-size: 16px;background: green;color:white;margin-top:20px;">
+                    查看更多
+                </div>
+            </a>
+
+
+        </div>
+    </notempty>
+
+    <!-- 精品推荐 -->
+    <div class="marbom">
+        <div class="sp-shop">
+            <a href="http://abc.danqingyaji.com/bearshop/">进入商品交易拍卖平台</a>
+            <p>若需拍卖商品，请点此链接</p>
+            <div class="backtop"><a  id="backup"></a></div>
+
+        </div>
+    </div>
+</div>
+<h2><!-- 分割线 --></h2>
+<!-- footer -->
+<include file="Public/footer" />
+
+<script type='text/javascript' src='__PUBLIC__/Home/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='__PUBLIC__/Home/js/sm.js' charset='utf-8'></script>
+<script type='text/javascript' src='__PUBLIC__/Home/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src="__PUBLIC__/Home/js/swiper.js"></script>
+<script type='text/javascript' src="__PUBLIC__/Home/js/scroll.js"></script>
+<script>
+
+    $(function() {
+
+        $('#backup').click(function(){
+            $.refreshScroller();
+            $('.content').scrollTop(0);
+        });
+
+
+
+
+        $("#morenew").click(function(){
+
+            if($("#newlist").hasClass("display")){
+                $("#newlist").removeClass("display")
+            }else{
+                $("#newlist").addClass("display")
+            }
+        })
+
+        $("#morejp").click(function(){
+
+            if($("#jplist").hasClass("display")){
+                $("#jplist").removeClass("display")
+            }else{
+                $("#jplist").addClass("display")
+            }
+        })
+
+        $("#morehot").click(function(){
+
+            if($("#hotlist").hasClass("display")){
+                $("#hotlist").removeClass("display")
+            }else{
+                $("#hotlist").addClass("display")
+            }
+        })
+
+
+    });
+
+    $(function(){
+        var index = 0;
+        $("#sp-footer a").eq(index).addClass("active").siblings().removeClass("active")
+    })
+
+    var swiper = new Swiper('.swiper-container', {
+        autoplay: {
+            delay: 3000,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+        },
+    });
+
+    var swiper2 = new Swiper('.move-cat-list', {
+        autoplay: {
+            delay: 0,
+        },
+        freeMode:true,
+        loop:true,//循环
+        speed:5000,//滚动速度
+        slidesPerView: 4,
+        spaceBetween: 10,
+        parallax:true,
+        pagination: {
+            clickable: true,
+        },
+    });
+
+
+
+
+    $(function() {
+        $('#searchKey').click(function(){
+            location.href = "{:U('Search/index')}";
+        });
+    });
+
+</script>
+</body>
+
+</html>

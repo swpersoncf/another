@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>{$classinfo}</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/dist/css/hui.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/dist/css/search.css" />
+<style type="text/css">
+.hui-media-list-img img{
+	width: 80px;
+	height: 80px;
+	overflow: hidden;
+}
+.pro-list ul li{
+    width:30%;
+    float:left;
+    margin:0 1%;
+    background:#fff;
+    border:1px solid #e0dfe2;
+    border-radius:5px;
+    margin-bottom:10px;
+    /*height:190px;*/
+}
+.pro-list ul li .pro_img img{
+    width:100%;
+    height:25%;
+}
+.pro-list ul li .pro_name{
+    color:#3b3b3b;
+    padding:2px 5px;
+	height:20px;
+}
+
+.pro-list ul li .pro_com{
+    color:#adadad;
+    padding:2px 5px;
+	height:20px;
+}
+
+.pro-list ul li .pro_price{
+    color:#3b3b3b;
+    padding:2px 5px;
+    color:#e63d3f;
+	height:20px;
+}
+</style>
+</head>
+
+<body>
+
+
+<div class="hui-wrap">
+
+	<div class="pro-list" style="margin-top:10px;">
+        <ul id="morelist">
+        <volist name="info" id="vo">
+            <li> <a href="{:U('Product/info',array('id'=>$vo['id']))}">
+                <div class="pro_img">
+                <img src="<eq name='vo.img' value=''>__PUBLIC__/Home/images/2.png<else/>
+					<php>$nowimg = get_imglist($vo['shortimg']);</php>
+					{$nowimg[0]}
+					</eq>" /></div>
+                <div class="pro_name">{$vo.title|substr=###,0,15}</div>
+                <div class="pro_com">{$vo.comname|substr=###,0,15}</div>
+                <div class="pro_price">￥{$vo.price}元</div>   
+                </a>             
+            </li>
+        </volist>   
+        
+		</ul>
+	</div>
+<div id="hui-footer">
+    <a href="{:U('Index/index')}" id="nav-home">
+        <div class="icon-index"></div>
+        <div class="hui-footer-text">首页</div>
+    </a>
+    <a href="{:U('Category/index')}" id="nav-news">
+        <div class="icon-cate"></div>
+        <div class="hui-footer-text">分类</div>
+    </a>
+    <a href="{:U('Mysuper/index')}" id="nav-forum">
+        <div class="icon-wd"></div>
+        <div class="hui-footer-text">V广告</div>
+    </a>
+    <a href="{:U('Mine/index')}" id="nav-my">
+        <div class="icon-my"></div>
+        <div class="hui-footer-text">我的</div>
+    </a>
+</div>
+</div>
+<script src="__PUBLIC__/Home/dist/js/hui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/flexible.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/iscroll.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/navbarscroll.js"></script>
+<script src="__PUBLIC__/Home/dist/js/hui-refresh-load-more.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	var page = 2;
+	$(document).ready(function(){
+		$('.wrapper').navbarscroll();
+		$(".menu li").click(function(){
+			var _index = $(this).index();
+			setTimeout(function(){
+				//hui.loading(false, true);	
+				$(".menu-list").eq(_index).addClass('selected').siblings().removeClass('selected');
+			}, 500);
+		});	
+		//hui.loadMore(getMore)
+		
+			
+	});
+	
+	hui.loadMore(getMore);//上拉加载更多
+	//加载更多
+	function getMore(){
+		hui.get(
+			"{:U('morelist',array('id'=>$id))}/p/"+page,
+			function(res){
+				//判断加载完毕
+				if(res == 'null'|| res==""){
+					hui.endLoadMore(true, '已经到头了...');
+					return false;
+				}
+				$("#morelist").append(res);
+				page++;
+				hui.endLoadMore();
+			}
+		);
+	}
+	
+/*	hui.onScroll(function(scTop){
+		hui.loadMore(getMore);
+	});*/
+	
+
+
+
+/*
+	var overscroll = function(el) {
+  el.addEventListener('touchstart', function() {
+    var top = el.scrollTop
+      , totalScroll = el.scrollHeight
+      , currentScroll = top + el.offsetHeight;
+    //If we're at the top or the bottom of the containers
+    //scroll, push up or down one pixel.
+    //
+    //this prevents the scroll from "passing through" to
+    //the body.
+    if(top === 0) {
+      el.scrollTop = 1;
+    } else if(currentScroll === totalScroll) {
+      el.scrollTop = top - 1;
+    }
+  });
+  el.addEventListener('touchmove', function(evt) {
+    //if the content is actually scrollable, i.e. the content is long enough
+    //that scrolling can occur
+    if(el.offsetHeight < el.scrollHeight)
+      evt._isScroller = true;
+  });
+}
+overscroll(document.querySelector('.scroll'));
+document.body.addEventListener('touchmove', function(evt) {
+  //In this case, the default behavior is scrolling the body, which
+  //would result in an overflow.  Since we don't want that, we preventDefault.
+  if(!evt._isScroller) {
+    evt.preventDefault();
+  }
+});*/
+
+</script>
+</body>
+</html>
